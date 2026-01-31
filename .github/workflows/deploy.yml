@@ -1,29 +1,22 @@
 name: Deploy to GitHub Pages
 
-# Триггеры: когда запускать workflow
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
-  # Позволяет запускать вручную
+    branches: [main]
   workflow_dispatch:
 
-# Права доступа
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Настройка конкуренции
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Задача: сборка
   build:
     runs-on: ubuntu-latest
     steps:
@@ -40,11 +33,10 @@ jobs:
           echo "Сборка завершена: $(date)" > build-info.txt
           
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3  
         with:
           path: '.'
 
-  # Задача: развертывание
   deploy:
     environment:
       name: github-pages
@@ -54,5 +46,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
-
+        uses: actions/deploy-pages@v4  
